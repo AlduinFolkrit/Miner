@@ -1,5 +1,6 @@
 class GameObject {
 
     GameObject(){
+
     }
 }

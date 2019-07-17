@@ -1,8 +1,12 @@
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
@@ -11,8 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import java.util.Random;
 
 public class Game extends Application {
@@ -25,7 +27,16 @@ public class Game extends Application {
         GameField() {
             setPrefSize(60, 60);
 //            setBackground(new Background(new BackgroundFill(Color.BROWN,null,null)));
-//            addEventHandler(MouseEvent.MOUSE_CLICKED,);
+            addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton()== MouseButton.SECONDARY)
+                        rightMouseClick((int)event.getSceneX(),(int)event.getSceneY());
+                    else
+                        leftMouseClick((int)event.getSceneX(),(int)event.getSceneY());
+
+                }
+            });
         }
     }
 
@@ -33,28 +44,16 @@ public class Game extends Application {
     public void start(Stage primaryStage) {
 
         primaryStage.setTitle("MinerTest"); //pomostki
+
         //kornevoy uzel
-
-
         rootNode.setAlignment(Pos.CENTER);
-        // sozdanie scene
 
+        // sozdanie scene
         primaryStage.setScene(new Scene(rootNode, 550, 550));
 
         primaryStage.setResizable(false);
 
         initialize();
-
-
-//        ToggleButton bSecond = new ToggleButton("second");
-
-//        bFirst.setOnAction(a-> label.setText("koko"));
-//        bSecond.setOnAction(a->{
-//            if (bSecond.isSelected())
-//                label.setText("dudu");
-//            else
-//                label.setText("DUDU");}
-//        );
 
         primaryStage.show();
     }
@@ -81,7 +80,11 @@ public class Game extends Application {
         }
     }
 
-    void setMouseClick(){
+    void rightMouseClick(int x, int y){
+
+    }
+
+    void leftMouseClick(int x, int y){
 
     }
 
