@@ -1,5 +1,3 @@
-package MyMiner;
-
 import javafx.application.Application;
 import javafx.event.EventTarget;
 import javafx.event.EventType;

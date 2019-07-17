@@ -1,6 +1,3 @@
-package MyMiner;
-
-
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
