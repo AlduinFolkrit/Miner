@@ -1,3 +1,0 @@
-url =jdbc:postgresql://localhost:5432/Hosp_Fharma
-log =postgres
-pass =0
