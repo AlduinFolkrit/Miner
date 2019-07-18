@@ -25,13 +25,15 @@ public class Miner extends Game {
     @Override
     void rightMouseClick(int x, int y) {
         super.rightMouseClick(x, y);
-        System.out.println("x  "+x+"y  "+y);
+//        System.out.println("x  "+x+"y  "+y);
+        setValueCell(x,y,"4");
     }
 
     @Override
     void leftMouseClick(int x, int y) {
         super.leftMouseClick(x, y);
-        System.out.println("x  "+x+"y  "+y);
+//        System.out.println("x  "+x+"y  "+y);
+        setValueCell(x,y,"6");
     }
 }
 
