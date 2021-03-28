@@ -20,9 +20,9 @@ import java.util.Random;
 public class Game extends Application {
 
     static final int SIDE = 9;
-    private GameField[][] matrix = new GameField[SIDE][SIDE];
-    private FlowPane rootNode = new FlowPane(1, 1);
-    private Random rdm = new Random();
+    private final GameField[][] matrix = new GameField[SIDE][SIDE];
+    private final FlowPane rootNode = new FlowPane(1, 1);
+    private final Random rdm = new Random();
 
     class GameField extends TextFlow {
 

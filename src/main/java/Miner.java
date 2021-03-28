@@ -7,17 +7,26 @@ import java.util.List;
 public class Miner extends Game {
 
     private boolean isGameStopped;
-    private GameObject[][] array = new GameObject[SIDE][SIDE];
+    private int mineCounter = 0;
+    private int flagCounter = 0;
+    private final GameObject[][] array = new GameObject[SIDE][SIDE];
     public static final String MINE = "\uD83D\uDCA3";
 
     @Override
     public void start(Stage primaryStage) {
         super.start(primaryStage);
+        gameObjectInit();
+        countMineNeighbors();
+    }
+
+    private void gameObjectInit() {
         for (int x = 0; x < SIDE; x++) {
             for (int y = 0; y < SIDE; y++) {
                 if (setRandom() == 5) {
                     array[y][x] = new GameObject(x,y);
                     array[y][x].isMine= true;
+                    mineCounter++;
+                    flagCounter++;
 //                    setColor(x, y, Color.RED);
                 } else {
                     array[y][x] = new GameObject(x,y);
@@ -25,19 +34,17 @@ public class Miner extends Game {
                 }
             }
         }
-        countMineNeighbors();
     }
 
     @Override
     void rightMouseClick(int x, int y) {
-        super.rightMouseClick(x, y);
-//        setValueCell(x,y,"\ud83c\udfc1");
+        if (!isGameStopped && !array[y][x].isOpen) {
+            setFlag(x,y);
+        }
     }
 
     @Override
     void leftMouseClick(int x, int y) {
-        super.leftMouseClick(x, y);
-//        setValueCell(x,y,"\uD83D\uDCA3");
         openTile(x,y);
     }
 
@@ -62,10 +69,10 @@ public class Miner extends Game {
         List<GameObject> list = new ArrayList<>();
         int x = gameObject.x;
         int y = gameObject.y;
-        for (int v = y - 1; v < y + 2; v++) {
-            for (int h = x - 1; h < x + 2; h++) {
-                if (!(h < 0 || v < 0 || h > (SIDE - 1) || v > (SIDE - 1) || (h == x && v == y)))
-                    list.add(array[v][h]);
+        for (int vertical = y - 1; vertical < y + 2; vertical++) {
+            for (int horizontal = x - 1; horizontal < x + 2; horizontal++) {
+                if (!(horizontal < 0 || vertical < 0 || horizontal > (SIDE - 1) || vertical > (SIDE - 1) || (horizontal == x && vertical == y)))
+                    list.add(array[vertical][horizontal]);
             }
         }
         return list;
@@ -78,6 +85,7 @@ public class Miner extends Game {
                     if (array[y][x].isMine ) {
                         setValueCell(x,y,MINE);
 //                        setCellValueEx(x, y, Color.RED, MINE);
+                        setColor(x, y, Color.RED);
                         gameOver();
                     }
                     if (!array[y][x].isMine && array[y][x].countMineNeighbors != 0) {
@@ -109,7 +117,38 @@ public class Miner extends Game {
 //            win();
     }
 
+    void gameObjectReset(){
+        for (int x = 0; x < SIDE; x++) {
+            for (int y = 0; y < SIDE; y++) {
+                array[y][x].isMine = false;
+                array[y][x].isOpen =false;
+                array[y][x].countMineNeighbors = 0;
+                array[y][x].isFlag = false;
+                setColor(x,y, Color.GRAY);
+                setValueCell(x,y,"");
+            }
+        }
+    }
+
+    void setFlag(int x, int y){
+        if (array[y][x].isFlag) {
+            array[y][x].isFlag = false;
+            setValueCell(x, y, "");
+        }else{
+            array[y][x].isFlag = true;
+            setValueCell(x, y, "\ud83c\udfc1");
+        }
+    }
+
     void gameOver() {
+        isGameStopped = true;
+    }
+
+    void gameRestart(){
+        isGameStopped = false;
+        gameObjectReset();
+        gameObjectInit();
+        countMineNeighbors();
 
     }
 }
