@@ -77,7 +77,7 @@ public class Game extends Application {
         for (Node node : children)
             if (node instanceof Text) {
                 Text text = (Text) node;
-                text.setFont(Font.font("Helvetica", FontPosture.ITALIC, 50));
+                text.setFont(Font.font("Helvetica", FontPosture.ITALIC, 45));
                 text.setText(s);
             }
         }

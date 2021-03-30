@@ -45,7 +45,9 @@ public class Miner extends Game {
 
     @Override
     void leftMouseClick(int x, int y) {
-        openTile(x,y);
+        if (!isGameStopped)
+            openTile(x,y);
+        else gameRestart();
     }
 
     private void countMineNeighbors() {
@@ -131,12 +133,14 @@ public class Miner extends Game {
     }
 
     void setFlag(int x, int y){
-        if (array[y][x].isFlag) {
-            array[y][x].isFlag = false;
-            setValueCell(x, y, "");
-        }else{
+        if (!array[y][x].isFlag && flagCounter != 0) {
             array[y][x].isFlag = true;
             setValueCell(x, y, "\ud83c\udfc1");
+            flagCounter -- ;
+        }else{
+            array[y][x].isFlag = false;
+            setValueCell(x, y, "");
+            flagCounter ++ ;
         }
     }
 
