@@ -5,6 +5,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -13,8 +16,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import org.w3c.dom.ls.LSOutput;
 
 
+import java.util.Optional;
 import java.util.Random;
 
 public class Game extends Application {
@@ -35,14 +40,14 @@ public class Game extends Application {
             this.y = y;
 
             setPrefSize(60, 60);
-            setBackground(new Background(new BackgroundFill(Color.GRAY,null,null)));
+            setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
             addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if (event.getButton()== MouseButton.SECONDARY)
-                        rightMouseClick(x,y);
+                    if (event.getButton() == MouseButton.SECONDARY)
+                        rightMouseClick(x, y);
                     else
-                        leftMouseClick(x,y);
+                        leftMouseClick(x, y);
                 }
             });
             setTextAlignment(TextAlignment.CENTER);
@@ -80,26 +85,41 @@ public class Game extends Application {
                 text.setFont(Font.font("Helvetica", FontPosture.ITALIC, 45));
                 text.setText(s);
             }
-        }
+    }
 
     void setValueCell(int x, int y, int i) {
         String s = String.valueOf(i);
-        setValueCell(x,y,s);
+        setValueCell(x, y, s);
     }
 
-    int setRandom() { return rdm.nextInt(10); }
+    int setRandom() {
+        return rdm.nextInt(10);
+    }
 
     private void initialize() {
         for (int x = 0; x < SIDE; x++) {
             for (int y = 0; y < SIDE; y++) {
-                matrix[y][x] = new GameField(x,y, new Text(" ") );
+                matrix[y][x] = new GameField(x, y, new Text(" "));
                 rootNode.getChildren().add(matrix[y][x]);
             }
         }
     }
 
-    void rightMouseClick(int x, int y){}
+    void rightMouseClick(int x, int y) {
+    }
 
-    void leftMouseClick(int x, int y){}
+    void leftMouseClick(int x, int y) {
+    }
+
+    ButtonType showInformation() {
+         String s = "Вы проиграли!!!!";
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Результат игры");
+        alert.setHeaderText(s);
+        ButtonType restart = new ButtonType("Еще раз сыграть", ButtonBar.ButtonData.OK_DONE);
+        ButtonType exit = new ButtonType("Выход", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(restart,exit);
+        return alert.showAndWait().orElse(exit);
+    }
 
 }

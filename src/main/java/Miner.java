@@ -1,13 +1,17 @@
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Miner extends Game {
 
     private boolean isGameStopped;
     private int mineCounter = 0;
+    private int cellCounter = SIDE * SIDE;
     private int flagCounter = 0;
     private final GameObject[][] array = new GameObject[SIDE][SIDE];
     public static final String MINE = "\uD83D\uDCA3";
@@ -88,11 +92,12 @@ public class Miner extends Game {
                         setValueCell(x,y,MINE);
 //                        setCellValueEx(x, y, Color.RED, MINE);
                         setColor(x, y, Color.RED);
-                        gameOver();
+//                        gameOver();
+                        isGameStopped = true;
                     }
                     if (!array[y][x].isMine && array[y][x].countMineNeighbors != 0) {
                         array[y][x].isOpen = true;
-//                        countClosedTiles--;
+                        cellCounter -- ;
 //                        score+=5;
 //                        setScore(score);
                         setColor(x, y, Color.LIGHTBLUE);
@@ -100,7 +105,7 @@ public class Miner extends Game {
                     }
                     if (!array[y][x].isMine && array[y][x].countMineNeighbors == 0) {
                         array[y][x].isOpen = true;
-//                        countClosedTiles--;
+                        cellCounter -- ;
 //                        score+=5;
 //                        setScore(score);
                         setValueCell(x, y, "");
@@ -115,8 +120,10 @@ public class Miner extends Game {
                 }
             }
         }
-//        if (countClosedTiles==countMinesOnField)
-//            win();
+        if (cellCounter==mineCounter)
+            gameOver();
+        if (isGameStopped)
+            gameOver();
     }
 
     void gameObjectReset(){
@@ -137,7 +144,8 @@ public class Miner extends Game {
             array[y][x].isFlag = true;
             setValueCell(x, y, "\ud83c\udfc1");
             flagCounter -- ;
-        }else{
+        }
+        else if (array[y][x].isFlag){
             array[y][x].isFlag = false;
             setValueCell(x, y, "");
             flagCounter ++ ;
@@ -145,7 +153,17 @@ public class Miner extends Game {
     }
 
     void gameOver() {
+        //TODO добавить метод который будет показывать все мины после поражения
         isGameStopped = true;
+        show();
+    }
+
+    private void show(){
+        ButtonType buttonType = showInformation();
+        if (buttonType.getButtonData().name().equals("OK_DONE"))
+            gameRestart();
+        else
+            System.exit(1);
     }
 
     void gameRestart(){
